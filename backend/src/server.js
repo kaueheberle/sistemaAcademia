@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const usuarioRoutes = require('./routes/usuario.routes');
+const authRoutes = require('./routes/auth.routes');
 
 app.use(express.json());
 
+app.use(authRoutes);
 app.use('/usuarios', usuarioRoutes);
 
 app.get('/', (req, res) => {

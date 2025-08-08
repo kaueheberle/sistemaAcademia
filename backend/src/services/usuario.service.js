@@ -28,10 +28,17 @@ const deletarUsuario = async (id) => {
   });
 };
 
+const buscarUsuarioPorEmail = async (email) => {
+  return await prisma.usuario.findUnique({
+    where: { email },
+  });
+};
+
 module.exports = {
   listarUsuarios,
   criarUsuario,
   buscarUsuarioPorId,
   atualizarUsuario,
   deletarUsuario,
+  buscarUsuarioPorEmail,
 };

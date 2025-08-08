@@ -1,6 +1,9 @@
 const express = require('express');
 const controller = require('../controllers/usuario.controller');
+const auth = require('../middlewares/auth.middleware');
 const router = express.Router();
+
+router.use(auth);
 
 router.get('/', controller.listar);
 router.post('/', controller.criar);
