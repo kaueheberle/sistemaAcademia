@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id_usuario       Int        @id @default(autoincrement())
+  nome             String
+  email            String     @unique
+  senha_hash       String
+  nivel_acesso     String
+  ativo            Boolean    @default(true)
+
+  pagamentos       Pagamento[]
+  aulasMinistradas Aula[]     @relation("ProfessorAula")
+  logs             Log[]
+
+  @@map("usuarios")
+}
+
+model Plano {
+  id_plano        Int      @id @default(autoincrement())
+  nome            String
+  valor           Decimal  @db.Decimal(10,2)
+  duracao_meses   Int
+
+  alunos          Aluno[]
+
+  @@map("planos")
+}
+
+model Aluno {
+  id_aluno         Int        @id @default(autoincrement())
+  nome             String
+  cpf              String     @unique
+  data_nascimento  DateTime
+  plano_atual      Int?
+  data_vencimento  DateTime
+  foto_url         String?
+  status           String     @default("ativo")
+  digital_hash     String?
+
+  plano            Plano?     @relation(fields: [plano_atual], references: [id_plano])
+  pagamentos       Pagamento[]
+  presencas        Presenca[]
+
+  @@map("alunos")
+}
+
+model Pagamento {
+  id_pagamento     Int      @id @default(autoincrement())
+  id_aluno         Int
+  id_usuario       Int
+  valor_pago       Decimal  @db.Decimal(10,2)
+  data_pagamento   DateTime @default(now())
+  referente_a      String?
+  forma_pagamento  String?
+
+  aluno            Aluno    @relation(fields: [id_aluno], references: [id_aluno])
+  usuario          Usuario  @relation(fields: [id_usuario], references: [id_usuario])
+
+  @@map("pagamentos")
+}
+
+model Aula {
+  id_aula         Int        @id @default(autoincrement())
+  nome            String
+  dia_semana      String
+  horario_inicio  DateTime
+  horario_fim     DateTime
+  id_professor    Int?
+
+  professor       Usuario?   @relation("ProfessorAula", fields: [id_professor], references: [id_usuario])
+  presencas       Presenca[]
+
+  @@map("aulas")
+}
+
+model Presenca {
+  id_presenca     Int      @id @default(autoincrement())
+  id_aluno        Int
+  id_aula         Int
+  data            DateTime
+
+  aluno           Aluno    @relation(fields: [id_aluno], references: [id_aluno])
+  aula            Aula     @relation(fields: [id_aula], references: [id_aula])
+
+  @@map("presencas")
+}
+
+model Log {
+  id_log           Int       @id @default(autoincrement())
+  id_usuario       Int?
+  acao             String
+  data_hora        DateTime  @default(now())
+  entidade_afetada String?
+  id_referencia    Int?
+
+  usuario          Usuario?  @relation(fields: [id_usuario], references: [id_usuario])
+
+  @@map("logs")
+}

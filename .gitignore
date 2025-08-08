@@ -1,0 +1,29 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
+
+
+# 🔒 Arquivos sensíveis
+.env
+
+# 📦 Dependências
+node_modules/
+package-lock.json
+
+# 🧠 Prisma (evita subir migrações locais, opcional)
+backend/src/prisma/migrations/
+
+# ⚙️ Configurações de editor
+.vscode/
+.idea/
+
+# 💾 Logs e arquivos temporários
+*.log
+.DS_Store
+*.tmp
+
+# 🧪 Arquivos de teste ou experimentação (caso não queira subir)
+backend/src/teste.js
+
