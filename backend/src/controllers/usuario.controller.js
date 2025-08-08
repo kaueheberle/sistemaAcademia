@@ -33,34 +33,3 @@ module.exports = {
   atualizar,
   deletar,
 };
-
-// GET ID USUARIOS
-
-const usuarioService = require("../services/usuario.service");
-
-async function listarTodos(req, res) {
-  try {
-    const usuarios = await usuarioService.listarTodos();
-    res.json(usuarios);
-  } catch (erro) {
-    res.status(500).json({ erro: "Erro ao listar usuários" });
-  }
-}
-
-async function buscarUsuarioPorId(req, res) {
-  const { id } = req.params;
-  try {
-    const usuario = await usuarioService.buscarPorId(parseInt(id));
-    if (!usuario) {
-      return res.status(404).json({ mensagem: "Usuário não encontrado" });
-    }
-    res.json(usuario);
-  } catch (erro) {
-    res.status(500).json({ erro: "Erro ao buscar usuário" });
-  }
-}
-
-module.exports = {
-  listarTodos,
-  buscarUsuarioPorId,
-};
