@@ -35,20 +35,3 @@ module.exports = {
   atualizarUsuario,
   deletarUsuario,
 };
-
-// GET ID USUARIO
-async function listarTodos() {
-  return prisma.usuario.findMany();
-}
-
-async function buscarPorId(id) {
-  return prisma.usuario.findUnique({
-    where: { id_usuario: id },
-  });
-}
-
-// EXPORTS
-module.exports = {
-  listarTodos,
-  buscarPorId,
-};
