@@ -1,14 +1,16 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const usuarioRoutes = require('./routes/usuario.routes');
 const authRoutes = require('./routes/auth.routes');
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(authRoutes);
 app.use('/usuarios', usuarioRoutes);
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('API da Academia está rodando! 🏋️');
 });
 
